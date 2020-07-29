@@ -1,0 +1,44 @@
+{% extends 'base_old.html' %}
+
+<!-- Main title start -->
+{% block title %}
+    Tasker
+{% endblock %}
+<!-- Main title end -->
+
+
+<!-- Main page content title start -->
+{% block content_title %}
+    Header
+{% endblock %}
+<!-- End -->
+
+
+<!-- Main page content start -->
+{% block content%}
+<div class="mdl-grid">
+    <div class="mdl-cell mdl-cell--3-col mdl-cell--1-col-phone">
+    {% for task in tasks %}
+
+        <div class="mdl-card">
+            <div class="mdl-card__title">
+                <h2 class="mdl-card__title-text">{{ task.author_name }}</h2>
+            </div>
+            <div class="mdl-card__media">
+                <img src="skytower.jpg" border="0" alt=""
+                style="padding:10px;">
+            </div>
+            <div class="mdl-card__supporting-text">
+                {{ task.text }}
+            </div>
+            <div class="mdl-card__actions">
+                <a href="http://en.wikipedia.org/wiki/Sky_Tower_%28Auckland%29">Wikipedia entry</a>
+            </div>
+        </div>
+
+    {% endfor %}
+    </div>
+</div>
+
+{% endblock %}
+<!-- End  -->

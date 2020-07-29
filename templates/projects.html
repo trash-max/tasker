@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+<!-- Main title start -->
+{% block title %}
+    Tasker
+{% endblock %}
+<!-- Main title end -->
+
+
+<!-- Main page content title start -->
+{% block content_title %}
+<div class="uk-container">
+    Header
+</div>
+{% endblock %}
+<!-- End -->
+
+
+<!-- Main page content start -->
+{% block content%}
+<div class="uk-container">
+    <div class="uk-child-width-1-1@s uk-text-center" uk-grid>
+        {% for project in projects %}
+        <div>
+            <div class="uk-card uk-card-default uk-card-body">
+                <a href="{{ url_for('tasks_list', slug=project.slug) }}">  {{ project.name }} </a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock %}
+<!-- End  -->
