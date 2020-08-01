@@ -6,6 +6,7 @@ from flask import jsonify
 
 from flask_migrate import Migrate, MigrateCommand
 from flask_script import Manager
+# from flask_api import status
 
 from string import ascii_lowercase
 import random
@@ -42,8 +43,6 @@ class Project(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(32))
     slug = db.Column(db.String(32), unique=True)
-    author_name = db.Column(db.String(16))
-    author_email = db.Column(db.String(64))
     tasks = db.relationship('Task', backref='project')
 
     def __init__(self, *args, **kwargs):
@@ -51,7 +50,7 @@ class Project(db.Model):
         self.slug = slugify(8)
 
     def __repr__(self):
-        return f'<Project: {self.name}, author: {self.author_name}>'
+        return f'<Project: {self.name}>'
 
 
 class Task(db.Model):
@@ -60,8 +59,6 @@ class Task(db.Model):
     slug = db.Column(db.String(8), unique=True)
     priority = db.Column(db.Integer)
     solved = db.Column(db.Boolean)
-    author_name = db.Column(db.String(16))
-    author_email = db.Column(db.String(64))
     project_id = db.Column(db.Integer, db.ForeignKey('project.id'))
 
     def __init__(self, *args, **kwargs):
@@ -88,14 +85,14 @@ def api_json():
             "status": 200,
             "is_json": request.is_json,
             "test": "test",}
-        return json.dumps(json_response, indent=2, ensure_ascii=False)
+        return json.dumps(json_response, indent=2, ensure_ascii=False), 201, {'ContentType':'application/json'}
     else:
-        return('<h1> Not Json </h1>')
+        return('<h1> Not Json </h1>'), 200, {'ContentType':'text/html'}
 
 
 @app.route('/<slug>')
 def tasks_list(slug):
-    project = Project.query.filter(Project.slug==slug).first()
+    project = Project.query.filter(Project.slug==slug).first_or_404()
     return render_template('tasks.html', tasks=project.tasks)
 
 
@@ -103,7 +100,7 @@ def tasks_list(slug):
 @app.route('/')
 def index():
     projects = Project.query.all()
-    return render_template('projects.html', projects=projects)
+    return render_template('projects.html', projects=projects), 200
 
 
 ### Main ###
