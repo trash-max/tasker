@@ -76,11 +76,35 @@ def write_json(data, filename):
 
 
 ### Routing ###
+# JSON API
 @app.route('/api2', methods=['POST', 'GET'])
 def api_json():
     if (request.is_json):
         json_request = request.get_json()
+        json_response = {"server_status": 201}
         write_json(json_request, 'request.json')
+        # Validate FPI key
+        if json_request["api_key"] != "super_secret_key":
+            json_response.update({"error": "invalid API key"})
+            return json.dumps(json_response, indent=2, ensure_ascii=False), 201, {'ContentType':'application/json'}
+
+
+        if json_request["request"] == "get_tasks":
+            slug = json_request["project"]["slug"]
+            try:
+                project = Project.query.filter(Project.slug==slug).first()
+            except:
+                json_response.update({"error": "error reading database"})
+                return json.dumps(json_response, indent=2, ensure_ascii=False), 201, {'ContentType':'application/json'}
+            task_list ={}
+            for task in project.tasks:
+                i = {"task": task.text, "slug": task.slug, "solved": task.solved}
+                task_list.update({task.id: i})
+            json_response.update({"tasks": task_list})
+            write_json(json_response, 'response.json')
+            return json.dumps(json_response, indent=2, ensure_ascii=False), 201, {'ContentType':'application/json'}
+
+
         json_response = {
             "status": 200,
             "is_json": request.is_json,
@@ -90,11 +114,11 @@ def api_json():
         return('<h1> Not Json </h1>'), 200, {'ContentType':'text/html'}
 
 
+# Web presentation
 @app.route('/<slug>')
 def tasks_list(slug):
     project = Project.query.filter(Project.slug==slug).first_or_404()
     return render_template('tasks.html', tasks=project.tasks)
-
 
 
 @app.route('/')
