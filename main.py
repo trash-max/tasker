@@ -96,11 +96,13 @@ def api_json():
             except:
                 json_response.update({"error": "error reading database"})
                 return json.dumps(json_response, indent=2, ensure_ascii=False), 201, {'ContentType':'application/json'}
-            task_list ={}
+            task_list = {}
+            task_counter = 0
             for task in project.tasks:
                 i = {"task": task.text, "slug": task.slug, "solved": task.solved}
-                task_list.update({task.id: i})
-            json_response.update({"tasks": task_list})
+                task_list.update({task_counter: i})
+                task_counter = task_counter + 1
+            json_response.update({"tasks_list": task_list})
             write_json(json_response, 'response.json')
             return json.dumps(json_response, indent=2, ensure_ascii=False), 201, {'ContentType':'application/json'}
 
