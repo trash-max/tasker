@@ -1,0 +1,13 @@
+{
+  "server_status": 201,
+  "project_list": {
+    "0": {
+      "name": "Разработка проекта с системой тикетов",
+      "slug": "gnustpjw"
+    },
+    "1": {
+      "name": "Рецепт хлеба",
+      "slug": "ignumcqn"
+    }
+  }
+}

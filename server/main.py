@@ -83,12 +83,13 @@ def api_json():
         json_request = request.get_json()
         json_response = {"server_status": 201}
         write_json(json_request, './examples/last_request.json')
-        # Validate FPI key
+
+        # Validate API key
         if json_request["api_key"] != "super_secret_key":
             json_response.update({"error": "invalid API key"})
-            return json.dumps(json_response, indent=2, ensure_ascii=False), 201, {'ContentType':'application/json'}
+            return json.dumps(json_response, indent=2, ensure_ascii=False), 201, {'Content-Type':'application/json'}
 
-
+        # Tasks list
         if json_request["request"] == "get_tasks":
             write_json(json_request, './examples/tasks_list_request.json')
             slug = json_request["project"]["slug"]
@@ -96,16 +97,36 @@ def api_json():
                 project = Project.query.filter(Project.slug==slug).first()
             except:
                 json_response.update({"error": "error reading database"})
-                return json.dumps(json_response, indent=2, ensure_ascii=False), 201, {'ContentType':'application/json'}
+                return json.dumps(json_response, indent=2, ensure_ascii=False), 201, {'Content-Type':'application/json'}
             task_list = {}
             task_counter = 0
             for task in project.tasks:
-                i = {"task": task.text, "slug": task.slug, "solved": task.solved}
+                i = {"task": task.text, "priority": task.priority, "slug": task.slug, "solved": task.solved}
                 task_list.update({task_counter: i})
                 task_counter = task_counter + 1
+            json_response.update({"project": {"name": project.name, "slug": project.slug, "total_tasks": task_counter}})
             json_response.update({"tasks_list": task_list})
             write_json(json_response, './examples/tasks_list_response.json')
-            return json.dumps(json_response, indent=2, ensure_ascii=False), 201, {'ContentType':'application/json'}
+            return json.dumps(json_response, indent=2, ensure_ascii=False), 201, {'Content-Type':'application/json'}
+
+        # Projects list
+        if json_request["request"] == "get_projects":
+            write_json(json_request, './examples/project_list_request.json')
+            try:
+                projects = Project.query.all()
+            except:
+                json_response.update({"error": "error reading database"})
+                return json.dumps(json_response, indent=2, ensure_ascii=False), 201, {'Content-Type':'application/json'}
+            project_list = {}
+            project_counter = 0
+            for project in projects:
+                i = {"name": project.name, "slug": project.slug}
+                project_list.update({project_counter: i})
+                project_counter = project_counter + 1
+            json_response.update({"project_list": project_list})
+            write_json(json_response, './examples/project_list_response.json')
+            return json.dumps(json_response, indent=2, ensure_ascii=False), 201, {'Content-Type':'application/json'}
+
 
 
         json_response = {

@@ -22,7 +22,7 @@
     <div class="uk-child-width-1-1@s uk-text-center" uk-grid>
         {% for project in projects %}
         <div>
-            <div class="uk-card uk-card-primary uk-card-body">
+            <div class="uk-tile uk-tile-primary uk-padding-small">
                 <a href="{{ url_for('tasks_list', slug=project.slug) }}">  {{ project.name }} </a>
             </div>
         </div>
