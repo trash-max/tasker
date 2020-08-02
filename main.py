@@ -82,7 +82,7 @@ def api_json():
     if (request.is_json):
         json_request = request.get_json()
         json_response = {"server_status": 201}
-        write_json(json_request, 'request.json')
+        write_json(json_request, './examples/last_request.json')
         # Validate FPI key
         if json_request["api_key"] != "super_secret_key":
             json_response.update({"error": "invalid API key"})
@@ -90,6 +90,7 @@ def api_json():
 
 
         if json_request["request"] == "get_tasks":
+            write_json(json_request, './examples/tasks_list_request.json')
             slug = json_request["project"]["slug"]
             try:
                 project = Project.query.filter(Project.slug==slug).first()
@@ -103,7 +104,7 @@ def api_json():
                 task_list.update({task_counter: i})
                 task_counter = task_counter + 1
             json_response.update({"tasks_list": task_list})
-            write_json(json_response, 'response.json')
+            write_json(json_response, './examples/tasks_list_response.json')
             return json.dumps(json_response, indent=2, ensure_ascii=False), 201, {'ContentType':'application/json'}
 
 

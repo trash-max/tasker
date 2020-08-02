@@ -1,7 +1,5 @@
 # My ignores
 migrations/
-request.json
-response.json
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

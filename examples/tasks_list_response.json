@@ -1,0 +1,35 @@
+{
+  "server_status": 201,
+  "tasks_list": {
+    "0": {
+      "task": "Мука",
+      "slug": "azrt",
+      "solved": false
+    },
+    "1": {
+      "task": "Вода",
+      "slug": "ztdu",
+      "solved": false
+    },
+    "2": {
+      "task": "Дрожжи",
+      "slug": "pjlm",
+      "solved": false
+    },
+    "3": {
+      "task": "Сахар",
+      "slug": "ktrz",
+      "solved": false
+    },
+    "4": {
+      "task": "Соль",
+      "slug": "jruv",
+      "solved": false
+    },
+    "5": {
+      "task": "Столовая ложка растительного масла",
+      "slug": "gtze",
+      "solved": false
+    }
+  }
+}
