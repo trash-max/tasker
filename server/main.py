@@ -142,7 +142,7 @@ def api_json():
 @app.route('/<slug>')
 def tasks_list(slug):
     project = Project.query.filter(Project.slug==slug).first_or_404()
-    return render_template('tasks.html', tasks=project.tasks)
+    return render_template('tasks.html', tasks=project.tasks, header=project.name), 200
 
 
 @app.route('/')
