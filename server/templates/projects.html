@@ -20,11 +20,10 @@
 {% block content%}
 <div class="uk-container">
     <div class="uk-child-width-1-1@s uk-text-center" uk-grid>
-        {% for task in tasks %}
+        {% for project in projects %}
         <div>
-            <div class="uk-card uk-card-default uk-card-body">
-                {{ task.text }}
-                {{ task.solved }}
+            <div class="uk-card uk-card-primary uk-card-body">
+                <a href="{{ url_for('tasks_list', slug=project.slug) }}">  {{ project.name }} </a>
             </div>
         </div>
         {% endfor %}
