@@ -139,6 +139,7 @@ def api_json():
                 json_response.update({"error": "error reading database"})
                 return json.dumps(json_response, indent=2, ensure_ascii=False), 201, {'Content-Type':'application/json'}
             json_response.update({"OK": "new task added"})
+            write_json(json_response, './examples/new_task_response.json')
             return json.dumps(json_response, indent=2, ensure_ascii=False), 201, {'Content-Type':'application/json'}
 
 
