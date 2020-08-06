@@ -24,22 +24,31 @@
             <li>
                 {% if not task.solved %}
                     <div class="uk-card uk-card-primary">
-                {% else %}
-                    <div class="uk-card uk-card-default">
-                {% endif %}
                         <div class="uk-card-body">
-                            <p>{{ task.text }}</p>
+                            {{ task.text }}
                         </div>
                         <div class="uk-card-footer">
-                            {% if not task.solved %}
-                                {{ task.priority }}
-                            {% else %}
-                                Решено
-                            {% endif %}
+                            {{ task.priority }}
                         </div>
                     </div>
+                {% endif %}
             </li>
         {% endfor %}
+        {% for task in tasks %}
+            </li>
+                {% if task.solved %}
+                    <div class="uk-card uk-card-default">
+                        <div class="uk-card-body">
+                            {{ task.text }}
+                        </div>
+                        <div class="uk-card-footer">
+                            {{ task.priority }}
+                        </div>
+                    </div>
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
 </div>
 {% endblock %}
 <!-- End  -->

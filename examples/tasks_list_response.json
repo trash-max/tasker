@@ -8,20 +8,20 @@
   "tasks_list": {
     "0": {
       "task": "Мука",
-      "priority": 5,
+      "priority": 1,
       "slug": "azrt",
       "solved": false
     },
     "1": {
-      "task": "Вода",
-      "priority": 5,
-      "slug": "ztdu",
+      "task": "Дрожжи",
+      "priority": 2,
+      "slug": "pjlm",
       "solved": false
     },
     "2": {
-      "task": "Дрожжи",
+      "task": "Вода",
       "priority": 5,
-      "slug": "pjlm",
+      "slug": "ztdu",
       "solved": false
     },
     "3": {
@@ -31,15 +31,15 @@
       "solved": false
     },
     "4": {
-      "task": "Соль",
-      "priority": 5,
-      "slug": "jruv",
-      "solved": false
-    },
-    "5": {
       "task": "Столовая ложка растительного масла",
       "priority": 5,
       "slug": "gtze",
+      "solved": true
+    },
+    "5": {
+      "task": "Соль",
+      "priority": 7,
+      "slug": "jruv",
       "solved": false
     }
   }

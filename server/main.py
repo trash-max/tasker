@@ -43,7 +43,7 @@ class Project(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(32))
     slug = db.Column(db.String(32), unique=True)
-    tasks = db.relationship('Task', backref='project')
+    tasks = db.relationship('Task', backref='project', order_by="Task.priority")
 
     def __init__(self, *args, **kwargs):
         super(Project, self).__init__(*args, **kwargs)
@@ -127,6 +127,19 @@ def api_json():
             write_json(json_response, './examples/project_list_response.json')
             return json.dumps(json_response, indent=2, ensure_ascii=False), 201, {'Content-Type':'application/json'}
 
+        # New tasks
+        if json_request["request"] == "add_new_task":
+            write_json(json_request, './examples/new_task_request.json')
+            project = Project.query.filter(Project.slug==json_request["task"]["project_slug"]).first()
+            new_task = Task(text=json_request["task"]["text"], priority=json_request["task"]["priority"], project=project)
+            try:
+                db.session.add(new_task)
+                db.session.commit()
+            except:
+                json_response.update({"error": "error reading database"})
+                return json.dumps(json_response, indent=2, ensure_ascii=False), 201, {'Content-Type':'application/json'}
+            json_response.update({"OK": "new task added"})
+            return json.dumps(json_response, indent=2, ensure_ascii=False), 201, {'Content-Type':'application/json'}
 
 
         json_response = {
