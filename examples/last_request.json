@@ -3,7 +3,7 @@
   "request": "add_new_task",
   "task": {
     "project_slug": "ignumcqn",
-    "text": "Залить дрожжи теплой водой на 15 минут",
-    "priority": "4"
+    "text": "Добавить в воду соль, саха, ложку раститьельного масла",
+    "priority": "6"
   }
 }
