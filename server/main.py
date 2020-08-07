@@ -127,16 +127,32 @@ def api_json():
             write_json(json_response, './examples/project_list_response.json')
             return json.dumps(json_response, indent=2, ensure_ascii=False), 201, {'Content-Type':'application/json'}
 
-        # New tasks
+        # New tasks adding
         if json_request["request"] == "add_new_task":
             write_json(json_request, './examples/new_task_request.json')
-            project = Project.query.filter(Project.slug==json_request["task"]["project_slug"]).first()
+
+            if json_request["task"]["text"] == "":
+                json_response.update({"error": "task text cant be empty"})
+                return json.dumps(json_response, indent=2, ensure_ascii=False), 201, {'Content-Type':'application/json'}
+            if not json_request["task"]["priority"].isdigit():
+                json_response.update({"error": "task priority must be digit from 1 to 10"})
+                return json.dumps(json_response, indent=2, ensure_ascii=False), 201, {'Content-Type':'application/json'}
+            if not json_request["task"]["priority"] in ['1', '2', '3', '4', '5', '6', '7', '8', '9']:
+                json_response.update({"error": "task priority must be from 1 to 9"})
+                return json.dumps(json_response, indent=2, ensure_ascii=False), 201, {'Content-Type':'application/json'}
+
+            try:
+                project = Project.query.filter(Project.slug==json_request["task"]["project_slug"]).first_or_404()
+            except:
+                json_response.update({"error": "error reading project data from database"})
+                return json.dumps(json_response, indent=2, ensure_ascii=False), 201, {'Content-Type':'application/json'}
+
             new_task = Task(text=json_request["task"]["text"], priority=json_request["task"]["priority"], project=project)
             try:
                 db.session.add(new_task)
                 db.session.commit()
             except:
-                json_response.update({"error": "error reading database"})
+                json_response.update({"error": "cant add new task in database"})
                 return json.dumps(json_response, indent=2, ensure_ascii=False), 201, {'Content-Type':'application/json'}
             json_response.update({"OK": "new task added"})
             write_json(json_response, './examples/new_task_response.json')

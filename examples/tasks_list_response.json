@@ -1,45 +1,39 @@
 {
   "server_status": 201,
   "project": {
-    "name": "Рецепт хлеба",
-    "slug": "ignumcqn",
-    "total_tasks": 6
+    "name": "Разработка проекта с системой тикетов",
+    "slug": "gnustpjw",
+    "total_tasks": 5
   },
   "tasks_list": {
     "0": {
-      "task": "Мука",
+      "task": "five test",
       "priority": 1,
-      "slug": "azrt",
+      "slug": "mnvr",
       "solved": false
     },
     "1": {
-      "task": "Дрожжи",
+      "task": "four test",
       "priority": 2,
-      "slug": "pjlm",
+      "slug": "mxjq",
       "solved": false
     },
     "2": {
-      "task": "Вода",
+      "task": "Первое задание",
       "priority": 5,
-      "slug": "ztdu",
+      "slug": "heim",
       "solved": false
     },
     "3": {
-      "task": "Сахар",
+      "task": "Второе задание",
       "priority": 5,
-      "slug": "ktrz",
+      "slug": "gcwr",
       "solved": false
     },
     "4": {
-      "task": "Столовая ложка растительного масла",
-      "priority": 5,
-      "slug": "gtze",
-      "solved": true
-    },
-    "5": {
-      "task": "Соль",
+      "task": "tree",
       "priority": 7,
-      "slug": "jruv",
+      "slug": "fwau",
       "solved": false
     }
   }

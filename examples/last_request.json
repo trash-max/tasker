@@ -1,9 +1,7 @@
 {
   "api_key": "super_secret_key",
-  "request": "add_new_task",
-  "task": {
-    "project_slug": "ignumcqn",
-    "text": "Добавить в воду соль, саха, ложку раститьельного масла",
-    "priority": "6"
+  "request": "get_tasks",
+  "project": {
+    "slug": "gnustpjw"
   }
 }
