@@ -1,0 +1,7 @@
+{
+  "api_key": "super_secret_key",
+  "request": "solved_switch",
+  "task": {
+    "slug": "heim"
+  }
+}

@@ -3,7 +3,7 @@
   "request": "add_new_task",
   "task": {
     "project_slug": "gnustpjw",
-    "text": "five test",
-    "priority": "1"
+    "text": "Just 8",
+    "priority": "8"
   }
 }

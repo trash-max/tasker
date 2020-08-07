@@ -1,9 +1,11 @@
 {
   "server_status": 201,
+  "job_status": "done",
+  "description": "job done",
   "project": {
     "name": "Разработка проекта с системой тикетов",
     "slug": "gnustpjw",
-    "total_tasks": 5
+    "total_tasks": 8
   },
   "tasks_list": {
     "0": {
@@ -16,13 +18,13 @@
       "task": "four test",
       "priority": 2,
       "slug": "mxjq",
-      "solved": false
+      "solved": true
     },
     "2": {
       "task": "Первое задание",
       "priority": 5,
       "slug": "heim",
-      "solved": false
+      "solved": true
     },
     "3": {
       "task": "Второе задание",
@@ -34,6 +36,24 @@
       "task": "tree",
       "priority": 7,
       "slug": "fwau",
+      "solved": false
+    },
+    "5": {
+      "task": "seven test",
+      "priority": 7,
+      "slug": "vynd",
+      "solved": false
+    },
+    "6": {
+      "task": "Just 8",
+      "priority": 8,
+      "slug": "bopg",
+      "solved": false
+    },
+    "7": {
+      "task": "six test",
+      "priority": 9,
+      "slug": "lqpn",
       "solved": false
     }
   }

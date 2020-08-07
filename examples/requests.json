@@ -12,3 +12,14 @@
   "api_key": "super_secret_key",
   "request": "get_projects"
 }
+
+/* new task */
+{
+  "api_key": "super_secret_key",
+  "request": "add_new_task",
+  "task": {
+    "project_slug": "ignumcqn",
+    "text": "test text test text test text",
+    "priority": "5"
+  }
+}

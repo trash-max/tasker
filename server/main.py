@@ -81,23 +81,28 @@ def write_json(data, filename):
 def api_json():
     if (request.is_json):
         json_request = request.get_json()
-        json_response = {"server_status": 201}
+        json_response = {"server_status": 201,
+                        "job_status": "done",
+                        "description": "job done"}
         write_json(json_request, './examples/last_request.json')
 
         # Validate API key
         if json_request["api_key"] != "super_secret_key":
-            json_response.update({"error": "invalid API key"})
+            json_response.update({"job_status": "error",
+                                "description": "Invalid API key"})
             return json.dumps(json_response, indent=2, ensure_ascii=False), 201, {'Content-Type':'application/json'}
 
         # Tasks list
         if json_request["request"] == "get_tasks":
             write_json(json_request, './examples/tasks_list_request.json')
-            slug = json_request["project"]["slug"]
+
             try:
-                project = Project.query.filter(Project.slug==slug).first()
+                project = Project.query.filter(Project.slug==json_request["project"]["slug"]).first_or_404()
             except:
-                json_response.update({"error": "error reading database"})
+                json_response.update({"job_status": "error",
+                                    "description": "Can`t read database or find project by slug"})
                 return json.dumps(json_response, indent=2, ensure_ascii=False), 201, {'Content-Type':'application/json'}
+
             task_list = {}
             task_counter = 0
             for task in project.tasks:
@@ -115,7 +120,8 @@ def api_json():
             try:
                 projects = Project.query.all()
             except:
-                json_response.update({"error": "error reading database"})
+                json_response.update({"job_status": "error",
+                                    "description": "Can`t read database"})
                 return json.dumps(json_response, indent=2, ensure_ascii=False), 201, {'Content-Type':'application/json'}
             project_list = {}
             project_counter = 0
@@ -132,19 +138,23 @@ def api_json():
             write_json(json_request, './examples/new_task_request.json')
 
             if json_request["task"]["text"] == "":
-                json_response.update({"error": "task text cant be empty"})
+                json_response.update({"job_status": "error",
+                                    "description": "task text can`t be empty"})
                 return json.dumps(json_response, indent=2, ensure_ascii=False), 201, {'Content-Type':'application/json'}
             if not json_request["task"]["priority"].isdigit():
-                json_response.update({"error": "task priority must be digit from 1 to 10"})
+                json_response.update({"job_status": "error",
+                                    "description": "task priority must be digit from 1 to 10"})
                 return json.dumps(json_response, indent=2, ensure_ascii=False), 201, {'Content-Type':'application/json'}
             if not json_request["task"]["priority"] in ['1', '2', '3', '4', '5', '6', '7', '8', '9']:
-                json_response.update({"error": "task priority must be from 1 to 9"})
+                json_response.update({"job_status": "error",
+                                    "description": "task priority must be from 1 to 10"})
                 return json.dumps(json_response, indent=2, ensure_ascii=False), 201, {'Content-Type':'application/json'}
 
             try:
                 project = Project.query.filter(Project.slug==json_request["task"]["project_slug"]).first_or_404()
             except:
-                json_response.update({"error": "error reading project data from database"})
+                json_response.update({"job_status": "error",
+                                    "description": "Can`t read database or find project by slug"})
                 return json.dumps(json_response, indent=2, ensure_ascii=False), 201, {'Content-Type':'application/json'}
 
             new_task = Task(text=json_request["task"]["text"], priority=json_request["task"]["priority"], project=project)
@@ -152,11 +162,40 @@ def api_json():
                 db.session.add(new_task)
                 db.session.commit()
             except:
-                json_response.update({"error": "cant add new task in database"})
+                json_response.update({"job_status": "error",
+                                    "description": "Can`t write database (can`t add new task in database)"})
                 return json.dumps(json_response, indent=2, ensure_ascii=False), 201, {'Content-Type':'application/json'}
-            json_response.update({"OK": "new task added"})
+            json_response.update({"description": "new task added"})
             write_json(json_response, './examples/new_task_response.json')
             return json.dumps(json_response, indent=2, ensure_ascii=False), 201, {'Content-Type':'application/json'}
+
+        # Switch solved status of tasks
+        if json_request["request"] == "solved_switch":
+            write_json(json_request, './examples/switch_solved_status_request.json')
+
+            try:
+                task = Task.query.filter(Task.slug==json_request["task"]["slug"]).first_or_404()
+            except:
+                json_response.update({"job_status": "error",
+                                    "description": "Can`t read database or find task by slug"})
+                return json.dumps(json_response, indent=2, ensure_ascii=False), 201, {'Content-Type':'application/json'}
+
+            if task.solved:
+                task.solved = False
+            else:
+                task.solved = True
+
+            try:
+                db.session.commit()
+            except:
+                json_response.update({"job_status": "error",
+                                    "description": "Can`t write database (can`t change solved status)"})
+                return json.dumps(json_response, indent=2, ensure_ascii=False), 201, {'Content-Type':'application/json'}
+
+            json_response.update({"description": "task solved status is changed"})
+            write_json(json_response, './examples/switch_solved_status_response.json')
+            return json.dumps(json_response, indent=2, ensure_ascii=False), 201, {'Content-Type':'application/json'}
+
 
 
         json_response = {
