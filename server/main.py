@@ -73,6 +73,7 @@ class Task(db.Model):
 def write_json(data, filename):
     with open(filename, 'w') as f:
         json.dump(data, f, indent=2, ensure_ascii=False)
+    app.logger.info(str(data))
 
 
 ### Routing ###
@@ -85,6 +86,7 @@ def api_json():
                         "job_status": "done",
                         "description": "job done"}
         write_json(json_request, './examples/last_request.json')
+        app.logger.info("write last_request.json")
 
         # Validate API key
         if json_request["api_key"] != "super_secret_key":
@@ -95,6 +97,7 @@ def api_json():
         # Tasks list
         if json_request["request"] == "get_tasks":
             write_json(json_request, './examples/tasks_list_request.json')
+            app.logger.info("write tasks_list_request.json")
 
             try:
                 project = Project.query.filter(Project.slug==json_request["project"]["slug"]).first_or_404()
@@ -112,6 +115,7 @@ def api_json():
             json_response.update({"project": {"name": project.name, "slug": project.slug, "total_tasks": task_counter}})
             json_response.update({"tasks_list": task_list})
             write_json(json_response, './examples/tasks_list_response.json')
+            app.logger.info("write tasks_list_response.json")
             return json.dumps(json_response, indent=2, ensure_ascii=False), 201, {'Content-Type':'application/json'}
 
         # Projects list
@@ -222,4 +226,4 @@ def index():
 
 ### Main ###
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=5000, debug=True)
